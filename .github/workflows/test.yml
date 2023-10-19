@@ -11,11 +11,13 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Get list of updated files
         run: |
           git fetch origin ${{ github.base_ref }} --depth=1
-          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }} ${{ github.sha }})
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.event.before }} ${{ github.sha }})
           echo "$CHANGED_FILES" | while read file; do
             echo "Updated file: $file"
           done
