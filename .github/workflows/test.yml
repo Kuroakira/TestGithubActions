@@ -1,26 +1,24 @@
-name: List Updated Files on Merge
+name: Display Modified Files
 
 on:
   pull_request:
     types: [closed]
 
 jobs:
-  list-files:
+  display_changes:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
+
     steps:
-      - name: Check out merged code with full history
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+    - name: Checkout Repository
+      uses: actions/checkout@v2
 
-      - name: Fetch base branch
-        run: |
-          git fetch origin ${{ github.event.pull_request.base.ref }}
-
-      - name: Get list of updated files
-        run: |
-          CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }})
-          echo "$CHANGED_FILES" | while read file; do
-            echo "Updated file: $file"
-          done
+    - name: Display Modified Files
+      run: |
+        changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
+        if [ -n "$changed_files" ]; then
+          echo "Modified files in this PR:"
+          echo "$changed_files"
+        else
+          echo "No files were modified in this PR."
+        fi
