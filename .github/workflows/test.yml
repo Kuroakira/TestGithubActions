@@ -11,13 +11,13 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
     - name: Display Modified Files
       run: |
-        changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
+        changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}  --relative -- ./src | wc -l)
         if [ -n "$changed_files" ]; then
           echo "Modified files in this PR:"
           echo "$changed_files"
