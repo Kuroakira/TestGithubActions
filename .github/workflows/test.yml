@@ -19,6 +19,17 @@ jobs:
         working-directory: src
     
     steps:
-      run: |
-        diff=$(git diff --name-only origin/${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }})
-        echo "::notice diff: ${diff}"
+      - name: Fetch Base Branch Latest Commit
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.base.ref }}
+          fetch-depth: 1
+
+      # マージブランチのチェックアウト（デフォはgithub.shaに向いてる）
+      - name: Checkout Pull Request
+        uses: actions/checkout@v3
+
+      - name: Notice diff files
+        run: |-
+          diff=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }}..${{ github.sha }})
+          echo "::notice diff: ${diff}"
