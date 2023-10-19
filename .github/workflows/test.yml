@@ -17,7 +17,7 @@ jobs:
 
     - name: Display Modified Files
       run: |
-        changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}  --relative -- ./src | wc -l)
+        changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}  --relative -- ./src)
         if [ -n "$changed_files" ]; then
           echo "Modified files in this PR:"
           echo "$changed_files"
