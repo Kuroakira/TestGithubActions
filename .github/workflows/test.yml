@@ -1,0 +1,24 @@
+name: test
+
+on:
+  pull_request:
+    branchs:
+      - main
+    paths:
+      - "src/test/**"
+
+jobs:
+  git_diff_test:
+    name: git diff test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: src
+    
+    steps:
+      run: |
+        diff=$(git diff --name-only origin/${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }})
+        echo "::notice diff: ${diff}"
