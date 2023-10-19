@@ -25,5 +25,5 @@ jobs:
 
       - name: Notice diff files
         run: |-
-          diff=$(git diff --name-only origin/${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }})
+          diff=$(git diff --name-only ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }})
           echo "::notice diff: ${diff}"
