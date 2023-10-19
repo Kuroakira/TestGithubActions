@@ -9,12 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
     steps:
-      - name: Check out merged code
+      - name: Check out merged code with full history
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Fetch base branch
         run: |
-          git fetch origin ${{ github.event.pull_request.base.ref }} --depth=1
+          git fetch origin ${{ github.event.pull_request.base.ref }}
 
       - name: Get list of updated files
         run: |
