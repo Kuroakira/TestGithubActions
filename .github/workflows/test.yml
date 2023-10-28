@@ -2,6 +2,8 @@ name: Display Modified Files
 
 on:
   pull_request:
+    branches:
+      - main
     types: [closed]
 
 jobs:
